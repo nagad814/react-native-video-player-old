@@ -144,6 +144,7 @@ export default class VideoPlayer extends Component {
     this.onSeekGrant = this.onSeekGrant.bind(this);
     this.onSeekRelease = this.onSeekRelease.bind(this);
     this.onSeek = this.onSeek.bind(this);
+    this.onClose = this.onClose.bind(this);
   }
 
 
@@ -277,12 +278,16 @@ export default class VideoPlayer extends Component {
       // console.log(this.state.or);
     }
     });
-    
-    
-
     this.showControls();
   }
 
+
+    onClose() {
+      if(this.props.onClose){
+              this.props.onClose();
+      }
+    this.showControls();
+  }
 
   onSeekBarLayout({ nativeEvent }) {
     const customStyle = this.props.customStyles.seekBar;
@@ -368,6 +373,21 @@ export default class VideoPlayer extends Component {
     this.hideControls();
   }
 
+
+
+  renderCloseButton () {
+    return (
+      <TouchableOpacity
+          style={{
+          backgroundColor: 'rgba(0, 0, 0, 0.2)',
+          position: 'absolute',
+          top: 10,
+          left: 10,}} onPress={this.onClose}>
+      <Icon style={{}} name="close" size={30} color ="#fefefe" />
+      </TouchableOpacity>
+    );
+  }
+
   renderStartButton() {
     const { customStyles } = this.props;
     return (
@@ -393,6 +413,7 @@ export default class VideoPlayer extends Component {
         ]}
         source={thumbnail}
       >
+        {this.renderCloseButton()}
         {this.renderStartButton()}
       </Image>
     );
@@ -505,6 +526,8 @@ export default class VideoPlayer extends Component {
         >
           <TouchableOpacity style={styles.overlayButton} onPress={this.showControls} />
         </View>
+          {((!this.state.isPlaying) || this.state.isControlsVisible)
+          ? this.renderCloseButton() : null}
         {((!this.state.isPlaying) || this.state.isControlsVisible)
           ? this.renderControls() : this.renderSeekBar(true)}
       </View>
@@ -574,6 +597,7 @@ VideoPlayer.propTypes = {
   onEnd: PropTypes.func,
   onProgress: PropTypes.func,
   onLoad: PropTypes.func,
+  onClose: PropTypes.func,
 };
 
 VideoPlayer.defaultProps = {
