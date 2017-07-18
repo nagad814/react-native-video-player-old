@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, Platform ,  Dimensions} from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity, Platform ,  Dimensions, ImageBackground} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Video from 'react-native-video'; 
 import Orientation from 'react-native-orientation'; // eslint-disable-line
@@ -403,7 +403,7 @@ export default class VideoPlayer extends Component {
   renderThumbnail() {
     const { thumbnail, style, customStyles, ...props } = this.props;
     return (
-      <Image
+      <ImageBackground
         {...props}
         style={[
           styles.thumbnail,
@@ -415,7 +415,7 @@ export default class VideoPlayer extends Component {
       >
         {this.renderCloseButton()}
         {this.renderStartButton()}
-      </Image>
+      </ImageBackground>
     );
   }
 
